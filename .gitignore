@@ -1,0 +1,5 @@
+.vscode
+/resources/css
+/resources/js/bootstrap.bundle.min.js
+/resources/js/jquery.min.js
+/resources/js/popper.min.js
