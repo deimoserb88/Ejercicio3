@@ -5,7 +5,8 @@
     require '../../app/autoloader.php';
     include "./layouts/main.php";
     use Controllers\auth\LoginController as LoginController;
-    head(new LoginController);
+    $ua = new LoginController;
+    head($ua);
 
 ?>
 
@@ -17,7 +18,7 @@
     </div>
     <div class="col-6">
         <div id="content" class="content">
-        ******
+        
         </div>
     </div>
     
@@ -28,12 +29,14 @@
     </div>
 </div>
 
-<?php scripts('app.js'); ?>
+<?php scripts(); ?>
 
 <script type="text/javascript">
 $(function(){    
+    app.uid = "<?=$ua->uid?>";
+    app.sv = <?php echo $ua->sv ? "true" : "false"; ?>;
     app.previousPosts();
-    app.lastPost(1);
+    app.lastPost(1,app.sv,app.uid);    
 });
 </script>
 

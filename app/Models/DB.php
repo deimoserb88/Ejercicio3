@@ -13,6 +13,7 @@ class DB {
     //Variables de control para consultas
 
     public $s = " * ";
+    public $c = "";
     public $j = "";
     public $w = " 1 ";
     public $o = "";
@@ -46,21 +47,27 @@ class DB {
         return $this;
     }
 
+    public function count($c = "*"){
+        $this->c = ",count(" . $c . ") as tt ";
+        return $this;
+    }
+
     public function join($join="",$on=""){
         if($join != "" && $on !=""){
-            $this->j = ' a join ' . $join . ' on ' . $on; 
+            $this->j .= ' join ' . $join . ' on ' . $on; 
         }
         return $this;
     }
 
-    public function where($ww = []){
+    public function where($ww = []){        
         $this->w = "";
         if(count($ww) > 0){
             foreach($ww as $wheres){
                 $this->w .= $wheres[0] . " like '" . $wheres[1] . "' " . ' and ';
-            }
-            $this->w .= ' 1 ';
+            }           
         }
+        $this->w .= ' 1 ';
+        
         return $this;
     }
 
@@ -84,13 +91,13 @@ class DB {
     }
 
     public function get(){
-        $sql = "select " . $this->s .
+        $sql = "select " . $this->s . $this->c . 
                " from " . str_replace("Models\\","",get_class($this)) .
-               $this->j .
+               ($this->j != "" ? " a " . $this->j : "" ) .
                " where " . $this->w . 
                $this->o.
                $this->l;
-        //echo $sql;
+        //if($this->c != "") echo $sql;
         $this->r = $this->table->query($sql);
         $result = [];
         while($f = $this->r->fetch_assoc()){
@@ -107,6 +114,29 @@ class DB {
         $stmt = $this->table->prepare($sql);
         $stmt->bind_param(str_pad("",count($this->campos),"s"),...$this->valores);
         return $stmt->execute();
+    }
+
+    public function delete(){
+        $sql = 'delete  from ' . str_replace("Models\\","",get_class($this)) . 
+                " where " . $this->w;
+        
+        $result = $this->table->query($sql);
+
+        return $result;
+
+    }
+
+    public function update(){
+        foreach($this->valores as $key=>$value){
+            $sets[] = $key . "='" . $value ."'";
+        }
+        $sql = 'update ' . str_replace("Models\\","",get_class($this)) . 
+                ' set ' . implode(",",$sets) . ' where ' .$this->w;
+        //echo $sql . " - ";
+        $result = $this->table->query($sql);
+
+        return $result;
+                
     }
 
 } 

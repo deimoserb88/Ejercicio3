@@ -47,6 +47,9 @@ scripts("app_myposts.js");
 <script>
     $(function(){
         app_myposts.getMyPosts(<?=$ua->uid?>);
+        $(".btn-dp").click(function(){
+            console.log("***");
+        });
     });
 </script>
 

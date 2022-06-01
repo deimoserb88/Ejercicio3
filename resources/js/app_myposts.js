@@ -21,7 +21,9 @@ const app_myposts = {
                                     <td>${ post.created_at }</td>
                                     <td>
                                         <i class="bi bi-pencil-fill"></i>
-                                        <i class="bi bi-trash-fill"></i>
+                                        <button class="btn btn-link text-danger btn-dp" type="button" onclick="app_myposts.deletePost(${ post.id },${ uid })"> 
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
                                     </td>
                                 </tr>`;
                     }
@@ -29,6 +31,22 @@ const app_myposts = {
                 this.mp.html(html);
             }).catch( err => console.error( err ));
 
+    },
+    deletePost : function(pid,uid){
+        if(confirm("Borrar publicación")){
+            fetch(this.url + "?_dp&pid=" + pid)
+                .then( response => response.json())
+                .then( resp => {
+                    if(resp.r){
+                        alert("La publicación se eliminó correctametne");
+                        this.getMyPosts(uid);
+                    }else{
+                        alert("La publicación no se pudo borrar, comuníquese con el admin del Blog");
+                    }
+                }).catch( err => console.error("Hubo un error en el servidor: " + err));
+        }else{
+            alert("Acción cancelada");
+        };
     }
 
 }
