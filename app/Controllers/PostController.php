@@ -51,8 +51,9 @@ class PostController {
         if($limit == "1" || $pid != ""){
             $pid = $pid == "" ? json_decode($result)[0]->id : $pid; 
             $interac = new interactions();
-            $ttint = $interac->count()->where([['postid',$pid],['status',1]])->get();                        
-            $result = json_encode(array_merge(json_decode($result),json_decode($ttint)));
+            $ttint = $interac->count()->where([['postid',$pid],['status',1]])->get();   
+            $ul = $interac->select(['status'])->where([['postid',$pid],['status',1],['userid',$this->userId]])->get();                     
+            $result = json_encode(array_merge(json_decode($result),json_decode($ttint),json_decode($ul)));
         }
         return $result;
     }

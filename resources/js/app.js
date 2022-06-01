@@ -28,7 +28,7 @@ const app = {
                     html = "";
                     let primera = true;
                     for( let post of ppresp ){
-                        console.log(post);
+                        //console.log(post);
                         html += `
                             <a href="#" onclick="app.openPost(event,${ post.id },this)"
                                 class="list-group-item list-group-item-action ${ primera ? `active` : `` } pplg">
@@ -73,7 +73,10 @@ const app = {
                             class="btn btn-link ${ !this.sv ? "disabled" : "" }" 
                             style="text-decoration:none;" 
                             onclick="app.likePost(${ lpresp[0].id },${ this.uid })">
-                            <i class="bi bi-hand-thumbs-up"></i> ${ lpresp[1].tt }
+                            
+                            <i class="bi bi-hand-thumbs-up${ lpresp[2].status ? "-fill" : "" }"></i> 
+                            
+                            ${ lpresp[1].tt }
                         </button> 
 
                     `;

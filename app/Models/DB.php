@@ -97,7 +97,7 @@ class DB {
                " where " . $this->w . 
                $this->o.
                $this->l;
-        //if($this->c != "") echo $sql;
+        //echo $sql;
         $this->r = $this->table->query($sql);
         $result = [];
         while($f = $this->r->fetch_assoc()){
